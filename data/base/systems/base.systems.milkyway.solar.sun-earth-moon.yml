@@ -1,0 +1,17 @@
+name: SolarSystem
+prefix: base.objects.milkyway.solar
+
+systems:
+  - Sun:
+      direction: 0
+      angularVelocity: 0
+      systems:
+          - Earth:
+              direction: 0
+              angularVelocity: 0
+              coordinates:
+                  radius: 0
+                  angle: 0
+              velocity:
+                  radius: 0
+                  angle: 0

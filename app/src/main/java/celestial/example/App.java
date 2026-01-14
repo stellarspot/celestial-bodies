@@ -4,6 +4,7 @@
 
 package celestial.example;
 
+import celestial.data.Data;
 import celestial.data.DataLoader;
 
 import java.nio.file.Files;
@@ -23,10 +24,18 @@ public class App {
 
         System.out.printf("Load data from dir: %s%n", dataPath.toAbsolutePath());
 
-        Map<String, Object> objects = DataLoader.loadData(dataPath);
+        Data data = DataLoader.loadData(dataPath);
+        Map<String, Object> objects = data.getObjects();
+        Map<String, Object> systems = data.getSystems();
+
         System.out.printf("Loaded objects: %d%n", objects.size());
         for (String key : objects.keySet()) {
             System.out.printf("  key: %s, object: %s%n", key, objects.get(key));
+        }
+
+        System.out.printf("Loaded systems: %d%n", systems.size());
+        for (String key : systems.keySet()) {
+            System.out.printf("  key: %s, system: %s%n", key, systems.get(key));
         }
     }
 }

@@ -1,3 +1,9 @@
 Sun:
   mass: 1.9e30
   radius: 6.96e8
+Earth:
+  mass: 6e24
+  radius: 6.3e6
+Moon:
+  mass: 7.3e22
+  radius: 1.7e6

@@ -8,13 +8,12 @@ import java.io.InputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DataLoader {
 
-    public static Map<String, Object> loadData(Path dataPath) throws IOException {
-        Map<String, Object> objects = new LinkedHashMap<>();
+    public static Data loadData(Path dataPath) throws IOException {
+        Data data = new Data();
 
         LoaderOptions options = new LoaderOptions();
         Yaml yaml = new Yaml(options);
@@ -22,25 +21,27 @@ public class DataLoader {
         try (DirectoryStream<Path> ds = Files.newDirectoryStream(dataPath)) {
             for (Path path : ds) {
                 if (!Files.isDirectory(path)) continue;
-                loadObjects(objects, path, yaml);
+                loadDir(data.getObjects(), path.resolve("objects"), yaml);
+                loadDir(data.getSystems(), path.resolve("systems"), yaml);
             }
         }
 
-        return objects;
+        return data;
     }
 
-    private static void loadObjects(Map<String, Object> objects, Path path, Yaml yaml) throws IOException {
-        Path objectsPath = path.resolve("objects");
+    private static void loadDir(Map<String, Object> objects, Path path, Yaml yaml) throws IOException {
 
-        try (DirectoryStream<Path> ds = Files.newDirectoryStream(objectsPath)) {
+        if (!Files.exists(path)) return;
+
+        try (DirectoryStream<Path> ds = Files.newDirectoryStream(path)) {
             for (Path objectFile : ds) {
                 if (Files.isDirectory(objectFile)) continue;
-                loadObjectFile(objects, objectFile, yaml);
+                loadFile(objects, objectFile, yaml);
             }
         }
     }
 
-    private static void loadObjectFile(Map<String, Object> objects, Path path, Yaml yaml) throws IOException {
+    private static void loadFile(Map<String, Object> objects, Path path, Yaml yaml) throws IOException {
         // Check Buffered InputStream
         InputStream inputStream = Files.newInputStream(path);
 
